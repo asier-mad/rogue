@@ -1,0 +1,21 @@
+{
+  "name": "prismacm/rogue",
+  "description": "Iniciador de proyectos",
+  "keywords": ["proyectos","php"],
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Asier Madejón",
+      "email": "asier@prismacm.com",
+      "role": "Creator / Main Developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.1.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "Rogue\\": "core/"
+    }
+  }
+}
