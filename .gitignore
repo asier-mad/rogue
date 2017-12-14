@@ -1,2 +1,4 @@
 .idea/
 vendor/
+web/.env
+web/.env.local
