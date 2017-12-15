@@ -69,8 +69,20 @@ switch ($route_info[0]){
         break;
     case Dispatcher::FOUND:
         //200
-        $handler = $route_info[1];
+        //Nombre de la clase
+        $class_name = $route_info[1][0];
+        //Metodo a ejecutar
+        $method = $route_info[1][1];
+        //Variables
         $vars = $route_info[2];
-        call_user_func($handler,$vars);
+
+        $class = new $class_name;
+        $class->$method($vars);
         break;
+    default:
+        // Esto no deberia ocurrir segun la documentación, pero asi cubrimos todas las posibilidades.
+        Response::create('500 - Internal Server Error', Response::HTTP_INTERNAL_SERVER_ERROR)
+            ->prepare($request)
+            ->send();
+        return;
 }

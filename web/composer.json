@@ -20,7 +20,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Rogue\\": "core/"
+      "Rogue\\": "core/",
+      "Rogue\\Controllers\\": "controllers/"
     }
   }
 }
