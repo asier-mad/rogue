@@ -5,5 +5,5 @@
 declare(strict_types = 1);
 
 return [
-    ['GET', '/', ['Rogue\Controllers\Homepage','show']],
+    ['GET', '/[{name}]', ['Rogue\Controllers\Homepage','show']],
 ];

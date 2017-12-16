@@ -44,11 +44,19 @@ if(getenv('WEB_STATUS') != 'production'){
 $whoops->register();
 
 /**
+ * Inyector de dependencias
+ * Las dependencias se encuentran definidas en /core/dependencies.php
+ * @see league/container
+ */
+$injector = require __DIR__.'/dependencies.php';
+
+/**
  * Router
+ * Las routas se encuentran definidas en /core/routes.php
  * @see nikic/fast-route
  */
 $route_definition_callback = function (\FastRoute\RouteCollector $r){
-    $routes = include __DIR__.'/routes.php';
+    $routes = require __DIR__.'/routes.php';
     foreach ($routes as $route) $r->addRoute($route[0],$route[1],$route[2]);
 };
 $dispatcher = \FastRoute\simpleDispatcher($route_definition_callback);
@@ -76,8 +84,17 @@ switch ($route_info[0]){
         //Variables
         $vars = $route_info[2];
 
-        $class = new $class_name;
-        $class->$method($vars);
+        //Instancia del controlador resolviendo dependencias con el $injector
+        $controller = $injector->get($class_name);
+
+        //Generar respuesta con la llamda al metodo adecuado en el controlador
+        $response = $controller->$method($vars);
+        if($response instanceof Response){
+            $response
+                ->prepare($request)
+                ->send();
+        }
+
         break;
     default:
         // Esto no deberia ocurrir segun la documentación, pero asi cubrimos todas las posibilidades.
