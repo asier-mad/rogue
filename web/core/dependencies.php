@@ -8,13 +8,14 @@ $injector = new \League\Container\Container();
 
 //Spot (ORM)
 $db = new \Spot\Config();
-$db->addConnection('mysql', [
+$datas_db = [
     'dbname'   => getenv('DB_NAME'),
     'user'     => getenv('DB_USER'),
     'password' => getenv('DB_PASS'),
     'host'     => getenv('DB_HOST'),
-    'driver'   => 'pdo_mysql'
-]);
+];
+if(getenv('DB_DRIVER')) $datas_db['driver'] = getenv('DB_DRIVER');
+$db->addConnection(getenv('DB_TYPE'),$datas_db);
 
 $injector
     ->add('\Spot\Locator')
