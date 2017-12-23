@@ -84,11 +84,26 @@ switch ($route_info[0]){
         //Variables
         $vars = $route_info[2];
 
+        if($class_name == 'private_callback'){
+            //Seteamos el controlador segun las variables
+            if(!empty($vars['model'])){
+                $class_name = 'Rogue\Controllers\\' . ucfirst($vars['model']);
+            }else{
+                Response::create('500 - Internal Server Error', Response::HTTP_INTERNAL_SERVER_ERROR)
+                    ->prepare($request)
+                    ->send();
+            }
+        }
+
+        if(!class_exists($class_name)){
+            $class_name = 'Rogue\Controllers\Controller';
+        }
+
         //Instancia del controlador resolviendo dependencias con el $injector
         $controller = $injector->get($class_name);
 
-        //Generar respuesta con la llamda al metodo adecuado en el controlador
-        $response = $controller->$method($vars);
+        //Generar respuesta con la llamada al metodo adecuado en el controlador
+        $response = $controller->$method($vars,$request);
         if($response instanceof Response){
             $response
                 ->prepare($request)

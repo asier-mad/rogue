@@ -2,3 +2,6 @@
 vendor/
 web/.env
 web/.env.local
+material/
+diseño/
+desarrollo/
